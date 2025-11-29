@@ -105,7 +105,6 @@ class QuizAgent:
             )
             
             answer_str = response.choices[0].message.content.strip()
-            # Try to parse as JSON if it looks like one, otherwise return string/number
             try:
                 return json.loads(answer_str)
             except:
