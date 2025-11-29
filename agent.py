@@ -40,7 +40,7 @@ class QuizAgent:
         }
         
         - Be complete and runnable.
-        - Print the final answer to stdout, or save it to a variable named `final_answer`.
+        - MUST end with `print(final_answer)` to output the result.
         - Use libraries like `requests`, `pandas`, `bs4`, `lxml` as needed.
         - If downloading files, save them to the current directory.
         - CRITICAL: DO NOT submit the answer to the server. DO NOT use `requests.post` to submit the solution.

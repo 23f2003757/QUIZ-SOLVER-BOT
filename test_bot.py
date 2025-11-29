@@ -6,13 +6,9 @@ load_dotenv()
 
 def test_local_bot():
     url = "http://localhost:8000/run"
-    
-    # Use email from env or default
     email = os.getenv("STUDENT_EMAIL", "test@example.com")
     secret = os.getenv("QUIZ_SECRET", "default_secret")
-    
-    # This is the demo URL provided in the contest description
-    # It simulates a quiz flow.
+
     quiz_url = "https://tds-llm-analysis.s-anand.net/demo"
     
     payload = {
