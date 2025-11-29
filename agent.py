@@ -46,6 +46,7 @@ class QuizAgent:
         - CRITICAL: DO NOT submit the answer to the server. DO NOT use `requests.post` to submit the solution.
         - The system handles submission. You ONLY calculate the answer value.
         - IMPORTANT: If you need to scrape or download data, use the provided `Current URL` as the base. Do NOT guess `example.com`.
+        - OUTPUT FORMAT: Print ONLY the raw answer value (e.g., `1234` or `my_secret_code`). DO NOT print a JSON object, dictionary, or the submission payload.
         """
         
         user_prompt = f"""
