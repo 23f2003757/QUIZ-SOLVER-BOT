@@ -47,6 +47,7 @@ class QuizAgent:
         - The system handles submission. You ONLY calculate the answer value.
         - IMPORTANT: If you need to scrape or download data, use the provided `Current URL` as the base. Do NOT guess `example.com`.
         - OUTPUT FORMAT: Print ONLY the raw answer value (e.g., `1234` or `my_secret_code`). DO NOT print a JSON object, dictionary, or the submission payload.
+        - DEFENSIVE CODING: Always check if `soup.find(...)` returns an element before accessing `.text`. If not found, print "Element not found" to avoid crashing.
         """
         
         user_prompt = f"""
