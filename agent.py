@@ -15,7 +15,7 @@ class QuizAgent:
         )
         self.model = os.environ.get("OPENAI_MODEL", "gpt-4o")
 
-    def analyze_task(self, question: str, html_content: str) -> Dict[str, Any]:
+    def analyze_task(self, question: str, html_content: str, current_url: str = "") -> Dict[str, Any]:
         """
         Analyzes the question and HTML content to decide on a plan.
         Returns a JSON object with the plan.
@@ -27,6 +27,7 @@ class QuizAgent:
         You will be provided with:
         1. The question text.
         2. A snippet of the HTML content of the page (or a description of it).
+        3. The URL of the page you are currently on.
         
         You need to decide what steps to take.
         Your available tools are:
@@ -44,9 +45,11 @@ class QuizAgent:
         - If downloading files, save them to the current directory.
         - CRITICAL: DO NOT submit the answer to the server. DO NOT use `requests.post` to submit the solution.
         - The system handles submission. You ONLY calculate the answer value.
+        - IMPORTANT: If you need to scrape or download data, use the provided `Current URL` as the base. Do NOT guess `example.com`.
         """
         
         user_prompt = f"""
+        Current URL: {current_url}
         Question: {question}
         
         HTML Context (truncated):
@@ -105,6 +108,7 @@ class QuizAgent:
             )
             
             answer_str = response.choices[0].message.content.strip()
+            # Try to parse as JSON if it looks like one, otherwise return string/number
             try:
                 return json.loads(answer_str)
             except:

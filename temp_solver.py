@@ -1,37 +1,40 @@
+
 import requests
 from bs4 import BeautifulSoup
 
-# Basic setup
-base_url = "http://example.com"  # Replace with the base URL of the current page you are on
-relative_url = "/demo-scrape-data?email=23f2003757@ds.study.iitm.ac.in"
-full_url = base_url + relative_url
+# Base URL and endpoint
+base_url = "https://tds-llm-analysis.s-anand.net"
+data_endpoint = "/demo-scrape-data?email=23f2003757@ds.study.iitm.ac.in"
 
-# Request the page
-response = requests.get(full_url)
+# Construct full URL
+url = base_url + data_endpoint
+
+# Make a GET request to retrieve the page
+response = requests.get(url)
 
 # Check if the request was successful
 if response.status_code == 200:
-    data = response.content
-    # Since we're expecting a secret code, let's assume it's in JSON format
-    try:
-        data_json = response.json()
-        secret_code = data_json.get('secret', 'Secret code not found')
-        print('Secret Code:', secret_code)
-        final_answer = secret_code
-    except ValueError:
-        # If the response is HTML, we'll need to parse it
-        soup = BeautifulSoup(data, 'html.parser')
-        # Example of how to find a secret code in a div if it's in HTML
-        secret_code_tag = soup.find('div', id='secret-code')
-        if secret_code_tag:
-            secret_code = secret_code_tag.get_text(strip=True)
-            print('Secret Code:', secret_code)
-            final_answer = secret_code
-        else:
-            print('Secret code not found in HTML')
-            final_answer = None
+    html_content = response.text
+    # Parse the HTML content
+    soup = BeautifulSoup(html_content, 'html.parser')
+    
+    # Assuming that the secret code is located within a specific HTML tag
+    # For example, if it's in a div with id="secret-code"
+    secret_code_div = soup.find('div', id='secret-code')
+    if secret_code_div:
+        secret_code = secret_code_div.get_text(strip=True)
+    else:
+        # If the specific structure is unknown, assuming the secret code might
+        # just be the page's text
+        secret_code = soup.get_text(strip=True)
+    
+    # Print the final secret code
+    final_answer = {
+        "email": "23f2003757@ds.study.iitm.ac.in",
+        "secret": secret_code,
+        "url": "https://tds-llm-analysis.s-anand.net/demo-scrape?email=23f2003757%40ds.study.iitm.ac.in&id=44097",
+        "answer": secret_code
+    }
+    print(final_answer)
 else:
-    print(f'Failed to retrieve data, status code: {response.status_code}')
-    final_answer = None
-
-# final_answer now contains the secret code for further steps
+    print("Failed to retrieve the page.")

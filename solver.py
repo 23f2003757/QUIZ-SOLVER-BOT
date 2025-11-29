@@ -49,7 +49,7 @@ class QuizSolver:
                 
                 # Ask Agent to solve
                 # We pass the body text as the question context
-                plan = self.agent.analyze_task(body_text, content)
+                plan = self.agent.analyze_task(body_text, content, current_url)
                 
                 logger.info(f"Agent plan: {plan.get('thought')}")
                 code = plan.get("code")
